@@ -57,6 +57,7 @@ interface Food {
   price: number;
   image_url: string;
   formattedPrice: string;
+  favorite: boolean;
   extras: Extra[];
 }
 
@@ -73,38 +74,98 @@ const FoodDetails: React.FC = () => {
 
   useEffect(() => {
     async function loadFood(): Promise<void> {
-      // Load a specific food with extras based on routeParams id
+      const response = await api.get<Food>(`foods/${routeParams.id}`);
+
+      setFood(response.data);
+      setIsFavorite(response.data.favorite);
+
+      const updateExtras = response.data.extras.map(extra => ({
+        ...extra,
+        quantity: 0,
+      }));
+
+      setExtras(updateExtras);
     }
 
     loadFood();
   }, [routeParams]);
 
   function handleIncrementExtra(id: number): void {
-    // Increment extra quantity
+    const extra = extras.find(item => item.id === id);
+
+    if (extra) {
+      extra.quantity += 1;
+
+      const updateExtras = extras.map(item => {
+        if (item.id === extra.id) {
+          return extra;
+        }
+
+        return item;
+      });
+
+      setExtras(updateExtras);
+    }
   }
 
   function handleDecrementExtra(id: number): void {
-    // Decrement extra quantity
+    const extra = extras.find(item => item.id === id);
+
+    if (extra) {
+      if (extra.quantity > 0) {
+        extra.quantity -= 1;
+
+        const updateExtras = extras.map(item => {
+          if (item.id === extra.id) {
+            return extra;
+          }
+
+          return item;
+        });
+
+        setExtras(updateExtras);
+      }
+    }
   }
 
   function handleIncrementFood(): void {
-    // Increment food quantity
+    setFoodQuantity(foodQuantity + 1);
   }
 
   function handleDecrementFood(): void {
-    // Decrement food quantity
+    if (foodQuantity > 1) {
+      setFoodQuantity(foodQuantity - 1);
+    }
   }
 
-  const toggleFavorite = useCallback(() => {
-    // Toggle if food is favorite or not
+  const toggleFavorite = useCallback(async () => {
+    setIsFavorite(!isFavorite);
+    food.favorite = !isFavorite;
+    await api.put(`foods/${food.id}`, food);
+
+    if (!isFavorite) {
+      await api.post('favorites', food);
+    } else {
+      await api.delete(`favorites/${food.id}`);
+    }
   }, [isFavorite, food]);
 
   const cartTotal = useMemo(() => {
-    // Calculate cartTotal
+    const totalExtras = extras.reduce((total, extra) => {
+      return total + extra.value * extra.quantity;
+    }, 0);
+
+    return formatValue((Number(food.price) + totalExtras) * foodQuantity);
   }, [extras, food, foodQuantity]);
 
   async function handleFinishOrder(): Promise<void> {
-    // Finish the order and save on the API
+    const updateFood = {
+      ...food,
+      formattedValue: cartTotal,
+    };
+
+    await api.post('orders', updateFood);
+    navigation.navigate('Orders');
   }
 
   // Calculate the correct icon name
@@ -121,7 +182,7 @@ const FoodDetails: React.FC = () => {
           name={favoriteIconName}
           size={24}
           color="#FFB84D"
-          onPress={() => toggleFavorite()}
+          onPress={toggleFavorite}
         />
       ),
     });
