@@ -28,9 +28,9 @@
 
 ### ✅ Resultado
 <p>
-  <img src="https://github.com/gabriel-nt/GoRestaurant-Mobile/blob/master/src/assets/dashboard.png" alt="GoRestaurant" width="200"/>
-  <img src="https://github.com/gabriel-nt/GoRestaurant-Mobile/blob/master/src/assets/food-filter.png" alt="GoRestaurant" width="200"/>
-  <img src="https://github.com/gabriel-nt/GoRestaurant-Mobile/blob/master/src/assets/food-detail.png" alt="GoRestaurant" width="200"/>
+  <img src="https://github.com/gabriel-nt/GoRestaurant-Mobile/blob/master/src/assets/dashboard.png" alt="GoRestaurant" width="250"/>
+  <img src="https://github.com/gabriel-nt/GoRestaurant-Mobile/blob/master/src/assets/food-filter.png" alt="GoRestaurant" width="250"/>
+  <img src="https://github.com/gabriel-nt/GoRestaurant-Mobile/blob/master/src/assets/food-detail.png" alt="GoRestaurant" width="250"/>
 </p>
 
 ### 📎 Features
