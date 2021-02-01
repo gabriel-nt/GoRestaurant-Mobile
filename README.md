@@ -59,7 +59,7 @@ Caso você esteje usando Mac, pode utilizar o Xcode, mas caso esteje utilizando 
 
 ```bash
 # Clone este repositório
-$ git clone https://github.com/Gabriel-Teixeira/GoStack-Fundamentos-React-Native
+$ git clone https://github.com/gabriel-nt/GoStack-Fundamentos-React-Native
 
 # Instale as dependências
 $ yarn
